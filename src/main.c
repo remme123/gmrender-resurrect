@@ -200,6 +200,33 @@ static void init_logging(const char *log_file) {
 	}
 }
 
+#include <netdb.h>
+#include <arpa/inet.h>
+static char * get_ip()
+{
+	static char ip[16];
+
+    char hname[128];
+    struct hostent *hent;
+    char *p = NULL;
+    int i;
+    gethostname(hname, sizeof(hname));
+    hent = gethostbyname(hname);
+    printf("%s:\n", hent->h_name);
+    for (i = 0; hent->h_addr_list[i]; i++) {
+		p = (char *)inet_ntoa(*(struct in_addr*)(hent->h_addr_list[i]));
+        printf("\t%s\n", p);
+	}
+	if (p) {
+		strncpy(ip, p, sizeof(ip));
+    } else {
+    	printf("no IP available\n");
+    	return NULL;
+	}
+
+    return ip;
+}
+
 int main(int argc, char **argv)
 {
 	int rc;
@@ -212,6 +239,14 @@ int main(int argc, char **argv)
 	if (!process_cmdline(argc, argv)) {
 		return EXIT_FAILURE;
 	}
+
+	/*
+	 * auto get IP
+	 */
+	if (ip_address == NULL) 
+		ip_address = get_ip();
+	if (ip_address) 
+		printf("Using IP: %s\n", ip_address);
 
 	if (show_version) {
 		do_show_version();
