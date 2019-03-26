@@ -78,7 +78,7 @@ static const gchar *uuid = GMRENDER_UUID;
 #else
 static const gchar *uuid = "GMediaRender-1_0-000-000-002";
 #endif
-static const gchar *friendly_name = PACKAGE_NAME;
+static const gchar *friendly_name = "GMediaRender";
 static const gchar *output = NULL;
 static const gchar *pid_file = NULL;
 static const gchar *log_file = NULL;
