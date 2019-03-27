@@ -212,6 +212,10 @@ static char * get_ip()
     int i;
     gethostname(hname, sizeof(hname));
     hent = gethostbyname(hname);
+    if (hent == NULL) {
+		printf("gethostbyname(%s) error\n", hname);
+		return NULL;
+	}
     printf("%s:\n", hent->h_name);
     for (i = 0; hent->h_addr_list[i]; i++) {
 		p = (char *)inet_ntoa(*(struct in_addr*)(hent->h_addr_list[i]));
